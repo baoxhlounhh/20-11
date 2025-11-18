@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ảnh Ngang 30x45 Chạy Ngang</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            overflow: hidden; 
+        }
+
+        .multi-scroller {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .scroller-wrapper {
+            width: 100%;
+            overflow: hidden;
+            transform: translateZ(0); /* GPU acceleration */
+            -webkit-mask-image: linear-gradient(
+                to right,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+            mask-image: linear-gradient(
+                to right,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+        }
+
+        .scroller-track {
+            display: flex;
+            width: max-content;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform;
+            transform: translateZ(0); /* Force GPU acceleration */
+            backface-visibility: hidden; /* Tối ưu rendering */
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* --- ĐÂY LÀ PHẦN ĐIỀU CHỈNH --- */
+        .scroller-track img,
+        .scroller-track video {
+            /* Tỉ lệ 30x45 ngang (3:2) - ảnh/video ngang */
+            width: 270px;  /* Chiều rộng (phần 45) */
+            height: 180px; /* Chiều cao (phần 30) -> 270/180 = 3/2 */
+            
+            object-fit: cover; /* QUAN TRỌNG: Cắt ảnh/video vừa, không bị méo */
+            
+            margin: 0 10px;
+            border-radius: 10px;
+            background-color: #333;
+            flex-shrink: 0; /* Đảm bảo không bị co lại */
+            transform: translateZ(0); /* GPU acceleration */
+            backface-visibility: hidden; /* Tối ưu rendering */
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .scroller-track img {
+            image-rendering: -webkit-optimize-contrast; /* Tối ưu chất lượng ảnh */
+        }
+        /* --- HẾT PHẦN ĐIỀU CHỈNH --- */
+
+
+        /* Animation */
+        @keyframes scroll-left-to-right {
+            0% { 
+                transform: translateX(0) translateZ(0);
+            }
+            100% { 
+                transform: translateX(-33.333%) translateZ(0);
+            }
+        }
+
+        @keyframes scroll-right-to-left {
+            0% { 
+                transform: translateX(0) translateZ(0);
+            }
+            100% { 
+                transform: translateX(-33.333%) translateZ(0);
+            }
+        }
+
+        /* Áp dụng tốc độ */
+        #track1 {
+            animation-name: scroll-left-to-right; /* Dòng 1: trái qua phải */
+            animation-duration: 40s;
+        }
+        #track2 {
+            animation-name: scroll-left-to-right; /* Dòng 2: phải qua trái - dùng reverse */
+            animation-duration: 50s;
+            animation-direction: reverse;
+        }
+        #track3 {
+            animation-name: scroll-left-to-right; /* Dòng 3: trái qua phải */
+            animation-duration: 35s;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="multi-scroller">
+
+        <div class="scroller-wrapper">
+            <div class="scroller-track" id="track1">
+                <!-- 4 ảnh + 2 video - lặp lại 3 lần -->
+                <img src="anhmua1.1.jpg" alt="image">
+                <img src="anhmua1.2.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdmua1.mp4" type="video/mp4">
+                </video>
+                <img src="anhmua1.2.jpg" alt="image">
+                <img src="anhmua1.4.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdmua2.mp4" type="video/mp4">
+                </video>
+                <!-- Lặp lại lần 1 -->
+                <img src="anhmua1.1.jpg" alt="image">
+                <img src="anhmua1.4.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdmua1.mp4" type="video/mp4">
+                </video>
+                <img src="anhmua1.2.jpg" alt="image">
+                <img src="anhmua1.3.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdmua2.mp4" type="video/mp4">
+                </video>
+                <!-- Lặp lại lần 2 -->
+                <img src="anhmua1.1.jpg" alt="image">
+                <img src="anhmua1.2.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdmua1.mp4" type="video/mp4">
+                </video>
+                <img src="anhmua1.3.jpg" alt="image">
+                <img src="anhmua1.4.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdmua2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="scroller-wrapper">
+            <div class="scroller-track" id="track2">
+                <!-- 4 ảnh + 2 video - lặp lại 3 lần -->
+                <img src="anhnhay1.jpg" alt="image">
+                <img src="anhnhay4.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdnhay1.mp4" type="video/mp4">
+                </video>
+                <img src="anhnhay2.jpg" alt="image">
+                <img src="anhnhay3.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdnhay2.mp4" type="video/mp4">
+                </video>
+                <!-- Lặp lại lần 1 -->
+                <img src="anhnhay1.jpg" alt="image">
+                <img src="anhnhay4.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdnhay4.mp4" type="video/mp4">
+                </video>
+                <img src="anhnhay2.jpg" alt="image">
+                <img src="anhnhay3.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdnhay3.mp4" type="video/mp4">
+                </video>
+                <!-- Lặp lại lần 2 -->
+                <img src="anhnhay1.jpg" alt="image">
+                <img src="anhnhay3.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdnhay1.mp4" type="video/mp4">
+                </video>
+                <img src="anhnhay2.jpg" alt="image">
+                <img src="anhnhay4.jpg" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="vdnhay2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="scroller-wrapper">
+            <div class="scroller-track" id="track3">
+                <!-- 4 ảnh + 2 video - lặp lại 3 lần -->
+                <img src="https://source.unsplash.com/random/600x400?sig=10" alt="image">
+                <img src="https://source.unsplash.com/random/600x400?sig=11" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+                <img src="https://source.unsplash.com/random/600x400?sig=12" alt="image">
+                <img src="https://source.unsplash.com/random/600x400?sig=13" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+                <!-- Lặp lại lần 1 -->
+                <img src="https://source.unsplash.com/random/600x400?sig=10" alt="image">
+                <img src="https://source.unsplash.com/random/600x400?sig=11" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+                <img src="https://source.unsplash.com/random/600x400?sig=12" alt="image">
+                <img src="https://source.unsplash.com/random/600x400?sig=13" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+                <!-- Lặp lại lần 2 -->
+                <img src="https://source.unsplash.com/random/600x400?sig=10" alt="image">
+                <img src="https://source.unsplash.com/random/600x400?sig=11" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+                <img src="https://source.unsplash.com/random/600x400?sig=12" alt="image">
+                <img src="https://source.unsplash.com/random/600x400?sig=13" alt="image">
+                <video autoplay loop muted playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Đảm bảo tất cả video luôn phát liên tục trong vòng lặp
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('video');
+            
+            videos.forEach(video => {
+                // Đảm bảo video phát ngay khi load
+                video.play().catch(e => {
+                    // Bỏ qua lỗi autoplay
+                });
+                
+                // Khi video kết thúc, phát lại ngay lập tức (backup cho loop attribute)
+                video.addEventListener('ended', function() {
+                    this.currentTime = 0;
+                    this.play().catch(e => {});
+                });
+                
+                // Đảm bảo video luôn phát - nếu bị tạm dừng thì phát lại (trừ khi đã kết thúc)
+                video.addEventListener('pause', function() {
+                    // Phát lại nếu video bị tạm dừng nhưng chưa kết thúc
+                    if (this.paused && !this.ended) {
+                        setTimeout(() => {
+                            if (this.paused && !this.ended) {
+                                this.play().catch(e => {});
+                            }
+                        }, 100);
+                    }
+                });
+                
+                // Đảm bảo video luôn phát khi vào viewport
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Phát video khi vào viewport
+                            entry.target.play().catch(e => {});
+                        }
+                    });
+                }, {
+                    threshold: 0.01 // Phát ngay khi 1% video hiển thị
+                });
+                
+                observer.observe(video);
+                
+                // Kiểm tra định kỳ để đảm bảo video luôn phát
+                setInterval(() => {
+                    if (video.paused && !video.ended) {
+                        video.play().catch(e => {});
+                    }
+                }, 1000); // Kiểm tra mỗi giây
+            });
+        });
+    </script>
+
+</body>
+</html>
