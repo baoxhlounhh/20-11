@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20-11 Page on</title>
+    <title>Ảnh Ngang 30x45 Chạy Ngang</title>
     <style>
         body {
             display: flex;
@@ -232,9 +232,30 @@
 
     </div>
 
+    <!-- Nhạc nền -->
+    <audio id="backgroundMusic" loop>
+        <source src="phepmau.mp3" type="audio/mpeg">
+        <!-- Thêm đường dẫn file nhạc của bạn vào đây -->
+    </audio>
+
     <script>
         // Đảm bảo tất cả video luôn phát liên tục trong vòng lặp
         document.addEventListener('DOMContentLoaded', function() {
+            // Phát nhạc nền
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const musicSource = backgroundMusic?.querySelector('source');
+            if (backgroundMusic && musicSource && musicSource.src) {
+                backgroundMusic.volume = 0.5; // Điều chỉnh âm lượng (0.0 - 1.0)
+                backgroundMusic.play().catch(e => {
+                    console.log('Nhạc nền cần tương tác người dùng để phát:', e);
+                    // Thử phát lại khi người dùng tương tác
+                    document.addEventListener('click', function playMusicOnce() {
+                        backgroundMusic.play().catch(() => {});
+                        document.removeEventListener('click', playMusicOnce);
+                    });
+                });
+            }
+            
             const videos = document.querySelectorAll('video');
             
             videos.forEach(video => {
